@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 
 const SearchBar = () => {
     const [inputValue, setInputValue] = useState("");
-    const [_, setSearchParams] = useSearchParams();
+    const [, setSearchParams] = useSearchParams();
 
     const handleSubmit = (event) => {
         event.preventDefault();
