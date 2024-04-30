@@ -84,10 +84,7 @@ function CarList() {
 
   return (
     <div className="container mx-auto px-4">
-      <header className="py-5 bg-gray-800 text-white text-center">
-        <h1>Car Inventory</h1>
         <SearchBar setSearchParams={setSearchParams} />
-      </header>
       {showModal && (
         <div style={{
           position: 'fixed',
@@ -109,8 +106,7 @@ function CarList() {
           <CarCard car={car} key={car.sale_id} setCar={setCar} showModal={showModal} setModal={setModal} />
         ))}
       </div>
-      <footer className="py-4 bg-gray-900 text-white text-center mt-5">
-        <nav aria-label="Page navigation">
+       <nav className="py-4 bg-gray-900 text-white text-center mt-5" aria-label="Page navigation">
           <ul className="flex items-center justify-center space-x-2">
             <div className="container mx-auto flex justify-center items-center space-x-4">
               <li>
@@ -164,7 +160,7 @@ function CarList() {
           </ul>
 
         </nav>
-      </footer>
+
     </div>
   );
 }
