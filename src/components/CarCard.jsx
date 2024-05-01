@@ -5,6 +5,14 @@ style={{
             */
 import React from "react";
 
+function get_transmission(t) {
+    switch (t) {
+        case 1: return 'Manual'
+        case 2: return 'Automatic'
+        default: return 'Unknown'
+    }
+}
+
 const CarCard = ({ car, showModal, setModal, setCar }) => {
     return (
         <div
@@ -20,9 +28,9 @@ const CarCard = ({ car, showModal, setModal, setCar }) => {
             <div className="flex flex-col justify-between p-4 leading-normal flex-grow z-10">
                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{`${car.year} ${car.brand} ${car.model}`}</h5>
                 <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                    Mileage: {car.miles !== null ? car.miles.toLocaleString() : "N/A"} miles <br/>
-                    Transmission: {car.transmission} <br/>
-                    Inspected: {car.inspect ? "Yes" : "No"} <br/>
+                    Mileage: {car.miles !== null ? car.miles.toLocaleString() : "N/A"} miles <br />
+                    Transmission: {get_transmission(car.transmission)} <br />
+                    Inspected: {car.inspect ? "Yes" : "No"} <br />
                 </p>
                 <button
                     onClick={() => {
