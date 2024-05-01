@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const CarModal = ({ car, setModal, showModal }) => {
+const CarModal = ({ car, setModal, showModal, ref }) => {
     const navigate = useNavigate();
 
     return (
@@ -9,6 +9,7 @@ const CarModal = ({ car, setModal, showModal }) => {
             id="medium-modal"
             tabIndex="-1"
             className="overlay fixed inset-0 z-50 flex items-center justify-center p-4"
+            ref={ref}
         >
             <div className="relative w-full max-w-lg p-6 bg-white rounded-lg shadow dark:bg-gray-700">
                 <div className="flex justify-between items-center pb-3">
