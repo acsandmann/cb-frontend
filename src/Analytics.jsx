@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import CarPriceChartCard from './components/CarPriceChartCard';
+import BrandPriceChart from './components/BrandPriceChart';
 import LoadingCard from './components/LoadingCard';
 
 const Analytics = () => {
@@ -22,7 +23,7 @@ const Analytics = () => {
     return (
         <div className="container mx-auto px-4">
             {cars.length === 0 ? <LoadingCard /> : <CarPriceChartCard carData={cars} />}
-
+            {cars.length === 0 ? <LoadingCard /> : <BrandPriceChart data={cars} />}
         </div>
     );
 };

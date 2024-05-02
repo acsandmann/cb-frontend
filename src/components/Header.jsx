@@ -1,25 +1,43 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import { Button } from "flowbite-react";
+
 
 const Header = () => {
     return (
         <div>
-            <nav className="bg-white border-gray-200 dark:bg-gray-900">
-                <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                    <a href="/" className="font-bold flex items-center space-x-3 rtl:space-x-reverse">
+            <header className="border-gray-200 bg-gray-900">
+                <div className="container mx-auto flex flex-wrap p-5  flex-col md:flex-row items-center">
+                    <a href="/" className="font-bold flex items-center space-x-3 rtl:space-x-reverse text-white">
                         CS 172 Final
                     </a>
-                    <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-                        <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                    <nav className="hidden md:ml-auto md:mr-auto md:flex md:flex-wrap items-center text-base justify-center" id="navbar-default">
+                        <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 bg-gray-800 md:bg-gray-900 border-gray-700">
                             <li>
-                                <a href="/" className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500">Home</a>
+                                <motion.a whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.9 }} href="/" className="block py-2 px-3 md:p-0 text-white">Home</motion.a>
                             </li>
                             <li>
-                                <a href="/analytics" className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500">Analytics</a>
+                                <motion.a whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.9 }} href="/brands" className="block py-2 px-3 md:p-0 text-white">Brands</motion.a>
+                            </li>
+                            <li>
+                                <motion.a whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.9 }} href="/analytics" className="block py-2 px-3 md:p-0 text-white">Analytics</motion.a>
                             </li>
                         </ul>
-                    </div>
+                    </nav>
+                    <Button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => {
+                            window.location.href = `https://github.com/acsandmann/cb-frontend`
+                        }}
+                    >
+                        <span className="text-white">Github</span>
+                    </Button>
                 </div>
-            </nav>
+            </header>
 
         </div>
     );

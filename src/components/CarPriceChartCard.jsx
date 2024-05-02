@@ -69,8 +69,7 @@ const CarPriceChartCard = ({ carData }) => {
     };
 
     return (
-        <div className="chart-card" style={{ width: "600px", height: "400px" }}>
-            <h3>Car Price Trends</h3>
+        <div className="chart-card m-5" style={{ width: "600px", height: "400px" }}>
             <Line data={data} options={options} />
         </div>
     );

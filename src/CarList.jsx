@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import CarCard from "./components/CarCard";
+import LoadingCarCard from "./components/LoadingCarCard";
 import SearchBar from "./components/SearchBar";
 import CarModal from "./components/CarModal";
+import Loading from "./components/Loading";
+import { useFetch } from "./util";
 
 function CarList() {
-  const [cars, setCars] = useState([]);
+  const { data: cars, loading, error } = useFetch("http://localhost:6969/cars/");
   const [searchParams, setSearchParams] = useSearchParams();
   const [showModal, setModal] = useState(false);
   const modalEl = useRef();
@@ -14,20 +17,6 @@ function CarList() {
 
   const currentPage = parseInt(searchParams.get("page")) || 1;
   const searchTerm = searchParams.get("search") || "";
-
-  useEffect(() => {
-    const fetchCars = async () => {
-      try {
-        const response = await fetch("http://localhost:6969/cars/");
-        const data = await response.json();
-        setCars(data);
-      } catch (error) {
-        console.error("Error fetching cars:", error);
-      }
-    };
-
-    fetchCars();
-  }, []);
 
   useEffect(() => {
     const handler = (event) => {
@@ -91,8 +80,8 @@ function CarList() {
           <button
             onClick={() => paginate(number)}
             className={`${number === currentPage
-              ? "z-10 flex items-center justify-center px-4 h-10 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-              : "flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              ? "z-10 flex items-center justify-center px-4 h-10 leading-tight bg-gray-700 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white"
+              : "flex items-center justify-center px-4 h-10 leading-tight bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white"
               }`}
           >
             {number}
@@ -122,17 +111,26 @@ function CarList() {
         </div>
       )}
       <div className="grid md:grid-cols-3 gap-4 mt-5">
-        {currentCars.map((car) => (
-          <CarCard car={car} key={car.sale_id} setCar={setCar} showModal={showModal} setModal={setModal} />
-        ))}
+        {loading ? (
+          Array.from({ length: 30 }).map((_, i) => <LoadingCarCard key={i} />)
+
+        ) : (
+          currentCars.length === 0 ? (
+          <p className="align-center text-white">No results found. Please try another search term.</p>
+        ) : currentCars.map((car) => (
+            <CarCard car={car} key={car.sale_id} setCar={setCar} showModal={showModal} setModal={setModal} />
+          ))
+        )}
       </div>
-      <nav className="py-4 bg-gray-900 text-white text-center mt-5" aria-label="Page navigation">
+
+      <nav className="py-4 text-white text-center mt-5" aria-label="Page navigation">
         <ul className="flex items-center justify-center space-x-2">
-          <div className="container mx-auto flex justify-center items-center space-x-4">
+          <div className="container mx-auto flex justify-center items-center">
             <li>
               <button
                 onClick={previousPage}
-                className="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                disabled={parseInt(searchParams.get("page") || 1) === 1}
+                className="flex items-center justify-center px-4 h-10 ms-0 leading-tight disabled:text-surface/50 border-e-0 rounded-s-lg border-gray-700 bg-gray-800 text-gray-400 enabled:hover:bg-gray-700 enabled:hover:text-white"
               >
                 <span class="sr-only">Previous</span>
                 <svg
@@ -156,7 +154,8 @@ function CarList() {
             <li>
               <button
                 onClick={nextPage}
-                className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                disabled={parseInt(searchParams.get("page") || 1) === totalPages}
+                className={`flex items-center justify-center px-4 h-10 ms-0 leading-tight rounded-e-lg border-gray-700 bg-gray-800 text-gray-400 enabled:hover:bg-gray-700 enabled:hover:text-white`}
               >
                 <span class="sr-only">Next</span>
                 <svg
