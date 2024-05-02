@@ -25,6 +25,12 @@ code {
   z-index: 1050;
 }
 
+.without-ring {
+  outline: none;
+  outline:ring-offset-0;
+}
+
+
 
 @tailwind base;
 @tailwind components;

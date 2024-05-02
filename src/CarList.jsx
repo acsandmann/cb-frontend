@@ -1,47 +1,34 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import CarCard from "./components/CarCard";
 import LoadingCarCard from "./components/LoadingCarCard";
 import SearchBar from "./components/SearchBar";
 import CarModal from "./components/CarModal";
-import Loading from "./components/Loading";
 import { useFetch } from "./util";
+
+function filter_cars(cars, searchTerm) {
+  const searchWords = searchTerm.toLowerCase().split(/\s+/); // Split the search term into words by spaces
+
+  return cars.filter(car => {
+    // Create a searchable string from each car's relevant attributes
+    const carData = `${car.year} ${car.brand} ${car.model}`.toLowerCase();
+
+    // Check if all words in the search term are found in the combined car string
+    return searchWords.every(word => carData.includes(word));
+  });
+};
 
 function CarList() {
   const { data: cars, loading, error } = useFetch("http://localhost:6969/cars/");
   const [searchParams, setSearchParams] = useSearchParams();
   const [showModal, setModal] = useState(false);
-  const modalEl = useRef();
   const [car, setCar] = useState({});
   const carsPerPage = 30;
 
   const currentPage = parseInt(searchParams.get("page")) || 1;
   const searchTerm = searchParams.get("search") || "";
 
-  useEffect(() => {
-    const handler = (event) => {
-      if (!modalEl.current) {
-        return;
-      }
-      // if click was not inside of the element. "!" means not
-      // in other words, if click is outside the modal element
-      if (!modalEl.current.contains(event.target)) {
-        setModal(false);
-      }
-    };
-    // the key is using the `true` option
-    // `true` will enable the `capture` phase of event handling by browser
-    document.addEventListener("click", handler, true);
-    return () => {
-      document.removeEventListener("click", handler);
-    };
-  }, []);
-
-  const filteredCars = cars.filter((car) =>
-    `${car.year} ${car.brand} ${car.model}`
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
-  );
+  const filteredCars = filter_cars(cars, searchTerm);
 
   const indexOfLastCar = currentPage * carsPerPage;
   const indexOfFirstCar = indexOfLastCar - carsPerPage;
@@ -80,8 +67,8 @@ function CarList() {
           <button
             onClick={() => paginate(number)}
             className={`${number === currentPage
-              ? "z-10 flex items-center justify-center px-4 h-10 leading-tight bg-gray-700 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white"
-              : "flex items-center justify-center px-4 h-10 leading-tight bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white"
+              ? "z-10 flex items-center justify-center px-4 h-10 leading-tight bg-main-400 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white"
+              : "flex items-center justify-center px-4 h-10 leading-tight bg-main-500 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white"
               }`}
           >
             {number}
@@ -107,9 +94,10 @@ function CarList() {
           backgroundColor: 'rgba(0,0,0,0.5)',
           zIndex: 1050
         }}>
-          <CarModal ref={modalEl} car={car} setModal={setModal} showModal={showModal} />
+          <CarModal car={car} setModal={setModal} showModal={showModal} />
         </div>
       )}
+      {error && <p>Error: {error}</p>}
       <div className="grid md:grid-cols-3 gap-4 mt-5">
         {loading ? (
           Array.from({ length: 30 }).map((_, i) => <LoadingCarCard key={i} />)
@@ -130,7 +118,7 @@ function CarList() {
               <button
                 onClick={previousPage}
                 disabled={parseInt(searchParams.get("page") || 1) === 1}
-                className="flex items-center justify-center px-4 h-10 ms-0 leading-tight disabled:text-surface/50 border-e-0 rounded-s-lg border-gray-700 bg-gray-800 text-gray-400 enabled:hover:bg-gray-700 enabled:hover:text-white"
+                className="flex items-center justify-center px-4 h-10 ms-0 leading-tight disabled:text-surface/50 border-e-0 rounded-s-lg border-gray-700 bg-main-500 text-gray-400 enabled:hover:bg-gray-700 enabled:hover:text-white"
               >
                 <span class="sr-only">Previous</span>
                 <svg
@@ -155,7 +143,7 @@ function CarList() {
               <button
                 onClick={nextPage}
                 disabled={parseInt(searchParams.get("page") || 1) === totalPages}
-                className={`flex items-center justify-center px-4 h-10 ms-0 leading-tight rounded-e-lg border-gray-700 bg-gray-800 text-gray-400 enabled:hover:bg-gray-700 enabled:hover:text-white`}
+                className={`flex items-center justify-center px-4 h-10 ms-0 leading-tight rounded-e-lg border-gray-700 bg-main-500 text-gray-400 enabled:hover:bg-gray-700 enabled:hover:text-white`}
               >
                 <span class="sr-only">Next</span>
                 <svg

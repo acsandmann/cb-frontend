@@ -11,7 +11,7 @@ import Footer from './components/Footer';
 function App() {
   return (
     <Router>
-      <div className="App bg-gray-900">
+      <div className="App bg-main-body">
         <Header />
         <Routes>
           <Route path="/" element={<CarList />} />
