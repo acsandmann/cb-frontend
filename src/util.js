@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 export function useFetch(uri) {
     const location = new URL(uri)
-    const url = window.location.href.includes('localhost') ? `http://localhost:6969/${location.pathname+location.search}` : `http://154.53.38.83:6969/${location.pathname+location.search}`;
+    const url = window.location.href.includes('localhost') ? `http://localhost:6969${location.pathname+location.search}` : `https://154.53.38.83:6969${location.pathname+location.search}`;
 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
