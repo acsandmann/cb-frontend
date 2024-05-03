@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import CarCard from "./components/CarCard";
 import LoadingCarCard from "./components/LoadingCarCard";
@@ -19,11 +19,29 @@ function filter_cars(cars, searchTerm) {
 };
 
 function CarList() {
+  const ref = useRef(null);
   const { data: cars, loading, error } = useFetch("http://localhost:6969/cars/");
   const [searchParams, setSearchParams] = useSearchParams();
   const [showModal, setModal] = useState(false);
   const [car, setCar] = useState({});
   const carsPerPage = 30;
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      console.log(ref)
+      if (ref.current && !ref.current.contains(event.target)) {
+        setModal(false);
+      }
+    };
+
+    if (showModal) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [ref, setModal, showModal]);
 
   const currentPage = parseInt(searchParams.get("page")) || 1;
   const searchTerm = searchParams.get("search") || "";
@@ -94,24 +112,27 @@ function CarList() {
           backgroundColor: 'rgba(0,0,0,0.5)',
           zIndex: 1050
         }}>
-          <CarModal car={car} setModal={setModal} showModal={showModal} />
+          <CarModal ref={ref} car={car} setModal={setModal} showModal={showModal} />
         </div>
       )}
       {error && <p>Error: {error}</p>}
       <div className="grid md:grid-cols-3 gap-4 mt-5">
         {loading ? (
-          Array.from({ length: 30 }).map((_, i) => <LoadingCarCard key={i} />)
+          Array.from({ length: carsPerPage }).map((_, i) => <LoadingCarCard key={i} />)
 
         ) : (
           currentCars.length === 0 ? (
-          <p className="align-center text-white">No results found. Please try another search term.</p>
-        ) : currentCars.map((car) => (
+            <p className="align-center text-white">No results found. Please try another search term.</p>
+          ) : currentCars.map((car) => (
             <CarCard car={car} key={car.sale_id} setCar={setCar} showModal={showModal} setModal={setModal} />
           ))
         )}
       </div>
 
       <nav className="py-4 text-white text-center mt-5" aria-label="Page navigation">
+        <span class="mb-2 text-sm text-gray-400">
+          Showing <span class="font-semibold text-white">{(currentPage - 1) * carsPerPage + 1}</span> to <span class="font-semibold text-white">{Math.min((currentPage - 1) * carsPerPage + 1 + carsPerPage - 1, filteredCars.length)}</span> of <span class="font-semibold text-white">{filteredCars?.length}</span> Entries
+        </span>
         <ul className="flex items-center justify-center space-x-2">
           <div className="container mx-auto flex justify-center items-center">
             <li>

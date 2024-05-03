@@ -16,7 +16,7 @@ const SearchBar = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-3">
+        <form onSubmit={handleSubmit} className="max-w-md mx-auto my-4">
             <div className="relative outline-none select-none bg-main-500">
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

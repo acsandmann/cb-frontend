@@ -4,11 +4,11 @@ import { useNavigate } from "react-router-dom";
 const CarModal = ({ car, setModal, showModal, ref }) => {
     const navigate = useNavigate();
 
-    // Helper function to format undefined or null values
     const formatValue = value => value || "N/A";
 
     return (
         <div
+            ref={ref}
             id="medium-modal"
             tabIndex="-1"
             className="overlay fixed inset-0 z-50 flex items-center justify-center p-4"
@@ -42,7 +42,7 @@ const CarModal = ({ car, setModal, showModal, ref }) => {
                             <li><strong>Brand:</strong> {formatValue(car.brand)}</li>
                             <li><strong>Model:</strong> {formatValue(car.model)}</li>
                             <li><strong>Year:</strong> {formatValue(car.year)}</li>
-                            <li><strong>Price:</strong> ${formatValue(car.price)}</li>
+                            <li><strong>Price:</strong> ${formatValue(car.price)?.toLocaleString()}</li>
                             <li><strong>Mileage:</strong> {formatValue(car.miles)} miles</li>
                             <li><strong>Transmission:</strong> {formatValue(car.transmission === 1 ? "Manual" : "Automatic")}</li>
                             <li><strong>Inspected:</strong> {car.inspected ? "Yes" : "No"}</li>
@@ -61,7 +61,7 @@ const CarModal = ({ car, setModal, showModal, ref }) => {
                     <a
                         href={'https://carsandbids.com' + car.url}
                         target="_blank"
-                        className="mx-3 inline-flex items-center justify-center py-2 px-4 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none bg-card-300 hover:bg-card-200 focus:ring-primary"
+                        className="mx-3 inline-flex items-center justify-center py-2 px-4 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none bg-card-300 hover:bg-card-175 focus:ring-primary"
                         style={{ minWidth: "120px" }} rel="noreferrer"
                     >View Auction</a>
                     <button
@@ -69,7 +69,7 @@ const CarModal = ({ car, setModal, showModal, ref }) => {
                             setModal(!showModal);
                             navigate(`/car/${car.sale_id}`);
                         }}
-                        className="inline-flex items-center justify-center py-2 px-4 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none bg-card-300 hover:bg-card-200 focus:ring-primary"
+                        className="inline-flex items-center justify-center py-2 px-4 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none bg-card-300 hover:bg-card-175 focus:ring-primary"
                         style={{ minWidth: "120px" }}
                     >
                         See more
