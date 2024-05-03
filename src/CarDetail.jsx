@@ -94,8 +94,8 @@ function CarDetail() {
 
   return (
     <div className="p-4 shadow rounded bg-white">
-      <h2>Editing {`${car.year} ${car.brand} ${car.model}`}</h2>
-      <form onSubmit={handleSubmit}>
+      <h2>work in progress</h2>
+      {/*<form onSubmit={handleSubmit}>
         <label>
           Price:
           <input
@@ -156,13 +156,13 @@ function CarDetail() {
         >
           Update Car
         </button>
-      </form>
-      <button
+  </form>*/}
+      {/*<button
         onClick={handleDelete}
         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
       >
         Delete Car
-      </button>
+</button>*/}
     </div>
   );
 }

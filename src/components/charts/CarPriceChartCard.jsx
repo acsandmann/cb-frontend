@@ -21,8 +21,8 @@ const aggregateData = (data) => {
     });
 };
 
-const CarPriceChartCard = ({ carData }) => {
-    const aggregatedData = aggregateData(carData);
+const CarPriceChartCard = ({ data: c_data }) => {
+    const aggregatedData = aggregateData(c_data);
 
     const data = {
         labels: aggregatedData.map(data => `week ${data.week + 1}`),

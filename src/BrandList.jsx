@@ -9,7 +9,7 @@ const BrandList = () => {
 
     return (
         <div>
-            <h1>Brand List</h1>
+            <h1 className='text-white'>Brand List(work in progress no hate)</h1>
             {error && <p>Error: {error}</p>}
             {loading ? <Loading /> : (
                 <div className="grid md:grid-cols-6 gap-4 mt-5">

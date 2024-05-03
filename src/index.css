@@ -30,6 +30,22 @@ code {
   outline:ring-offset-0;
 }
 
+.container2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjust minmax to suitable sizes */
+  grid-gap: 20px; /* Ensure sufficient gap */
+  padding: 20px;
+  align-items: start; /* Align items at the start of the grid cell */
+}
+.chart-card {
+  min-height: 400px; /* Adjust based on your actual chart height requirements */
+  width: 100%;
+}
+@media (max-width: 768px) {
+  .container2 {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
 
 
 @tailwind base;
