@@ -5,6 +5,7 @@ const SearchBar = () => {
     const [inputValue, setInputValue] = useState("");
     const [, setSearchParams] = useSearchParams();
 
+
     const handleSubmit = (event) => {
         event.preventDefault();
         setSearchParams({ search: inputValue.trim(), page: 1 });
