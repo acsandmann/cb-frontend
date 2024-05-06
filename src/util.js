@@ -26,7 +26,7 @@ export function useFetch(uri) {
         };
 
         fetchData();
-    }, [url]);  // Dependency on URL means this will re-run only if URL changes
+    }, [url]);
 
     return { data, loading, error };
 };

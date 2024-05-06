@@ -40,8 +40,8 @@ const Predictions = () => {
             jsonData[key.toLowerCase()] = value;
         }
         console.log(formData, jsonData)
-        const url = 'http://localhost:6969/predict';
-
+        const location = new URL('http://localhost:6969/predict');
+        const url = window.location.href.includes('localhost') ? `http://localhost:6969${location.pathname+location.search}` : `https://154.53.38.83:6969${location.pathname+location.search}`;
         fetch(url, {
             method: 'POST',
             credentials: 'include',
