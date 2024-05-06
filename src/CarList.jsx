@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import CarCard from "./components/CarCard";
 import LoadingCarCard from "./components/LoadingCarCard";
 import SearchBar from "./components/SearchBar";
-import CarModal from "./components/CarModal";
 import { useFetch } from "./util";
 
 function filter_cars(cars, searchTerm) {
@@ -19,29 +18,9 @@ function filter_cars(cars, searchTerm) {
 };
 
 function CarList() {
-  const ref = useRef(null);
   const { data: cars, loading, error } = useFetch("http://localhost:6969/cars/");
   const [searchParams, setSearchParams] = useSearchParams();
-  const [showModal, setModal] = useState(false);
-  const [car, setCar] = useState({});
   const carsPerPage = 30;
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      console.log(ref)
-      if (ref.current && !ref.current.contains(event.target)) {
-        setModal(false);
-      }
-    };
-
-    if (showModal) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [ref, setModal, showModal]);
 
   const currentPage = parseInt(searchParams.get("page")) || 1;
   const searchTerm = searchParams.get("search") || "";
@@ -99,24 +78,8 @@ function CarList() {
   return (
     <div className="container mx-auto px-4">
       <SearchBar setSearchParams={setSearchParams} />
-      {showModal && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: 'rgba(0,0,0,0.5)',
-          zIndex: 1050
-        }}>
-          <CarModal ref={ref} car={car} setModal={setModal} showModal={showModal} />
-        </div>
-      )}
       {error && <p>Error: {error}</p>}
-      <div className="grid md:grid-cols-3 gap-4 mt-5">
+      <div className="grid md:grid-cols-3 gap-5 mt-5">
         {loading ? (
           Array.from({ length: carsPerPage }).map((_, i) => <LoadingCarCard key={i} />)
 
@@ -124,7 +87,7 @@ function CarList() {
           currentCars.length === 0 ? (
             <p className="align-center text-white">No results found. Please try another search term.</p>
           ) : currentCars.map((car) => (
-            <CarCard car={car} key={car.sale_id} setCar={setCar} showModal={showModal} setModal={setModal} />
+            <CarCard car={car} key={car.sale_id} />
           ))
         )}
       </div>

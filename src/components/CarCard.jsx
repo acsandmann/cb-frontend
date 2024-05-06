@@ -1,47 +1,63 @@
-/*
-style={{
-                backgroundImage: 'linear-gradient(to right, #ffffff 30%, rgba(255,255,255,0) 100%)'
-            }}
-            */
 import React from "react";
 import { motion } from "framer-motion";
-import ViewDetails from "./buttons/ViewDetails";
+import r from '../r.json';
 
-function get_transmission(t) {
-    switch (t) {
-        case 1: return 'Manual'
-        case 2: return 'Automatic'
-        default: return 'Unknown'
-    }
+/*
+{[
+                        car.miles !== null ? `${car.miles.toLocaleString()} Miles` : '',
+                        get_transmission(car.transmission),
+                        car.inspect ? "Inspected" : '',
+                        car.featured ? "Featured" : '',
+                        ev(car).ev ? `Electric Vehicle · ${ev(car).range} miles of range` : '',
+                        car.horsepower ? car.horsepower : '',
+                        car.ownership ? car.ownership : '',
+                        car.modifications ? car.modifications : ''
+                    ].filter(Boolean).join(' · ')}
+                    */
+
+function ev(c) {
+    const foundCar = r.find(car => car.Model.includes(`${c.year} ${c.brand} ${c.model}`));
+    return foundCar ? { ev: true, range: parseInt(foundCar.Range) } : { ev: false, range: 0 };
 }
 
 const CarCard = ({ car, showModal, setModal, setCar }) => {
+    const e = ev(car);
+    if (e.ev && !car.extra.includes('range')) car.extra += ` · ${e.range} miles of range`;
     return (
         <motion.div
-            initial={{opacity: 0}}
-            whileInView={{opacity: 1}}
-            whileHover={{scale: 1.02}}
-            className="flex flex-col md:flex-row md:max-w-xl overflow-hidden rounded-lg shadow bg-card-150 hover:bg-card-175 text-white relative"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            whileHover={{ scale: 1.02 }}
+            className="flex flex-col md:flex-row md:max-w-xl overflow-hidden rounded-md bg-card-150 hover:bg-card-175 text-white relative"
         >
             <div className="flex flex-col justify-between p-4 leading-normal flex-grow z-10">
-                <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">{`${car.year} ${car.brand} ${car.model}`}</h5>
-                <p className="mb-3 font-normal text-gray-400">
-                    Mileage: {car.miles !== null ? car.miles.toLocaleString() : "N/A"} miles <br/>
-                    Transmission: {get_transmission(car.transmission)} <br/>
-                    Inspected: {car.inspect ? "Yes" : "No"} <br/>
+                <h5 className="flex mb-1 text-xl font-bold tracking-tight text-white">
+                    {`${car.year} ${car.brand} ${car.model}`}
+                </h5>
+                <p className="text-base font-semibold text-gray-400">
+                    {car.price ? `$${car.price.toLocaleString()}` : 'Price not available'}
                 </p>
-                <ViewDetails onClick={() => {
-                    setModal(!showModal);
-                    setCar(car);
-                }}/>
+                <hr className="bg-white my-2 opacity-5"></hr>
+                <p className="mb-3 font-normal text-gray-400 text-sm">
+                    {car.extra.replace(/(?<!\d),|,(?!\d)/g, ' · ')}
+                </p>
+                {/*setModal &&
+                    <ViewDetails onClick={() => {
+                        setModal(!showModal);
+                        setCar(car);
+                    }} />*/}
             </div>
-            <div className="md:w-2/5 flex-none z-10">
+            <div className="md:w-2/5 flex-none relative z-10">
                 <img
-                    className="w-full h-full object-cover rounded-b-lg md:rounded-none md:rounded-r-lg"
+                    className="w-full h-full object-cover rounded-b-md md:rounded-none md:rounded-r-md"
                     src={car.image_url}
                     alt={`${car.year} ${car.brand} ${car.model}`}
                 />
+                {/*<span className="opacity-90 bg-card-300 text-white text-sm font-medium px-2.5 py-1 rounded-md absolute bottom-0 right-0 mb-2 mr-2 z-20">
+                    ${car.price?.toLocaleString()}
+                </span>*/}
             </div>
+
 
         </motion.div>
     );

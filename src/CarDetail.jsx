@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useFetch } from "./util";
 
 function CarDetail() {
   const { sale_id } = useParams();

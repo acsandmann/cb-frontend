@@ -25,6 +25,9 @@ module.exports = {
           },
         },
       },
+      maxHeight: {
+        '100': '6.25rem',
+      }
     },
     colors,
   },

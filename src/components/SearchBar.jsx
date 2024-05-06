@@ -16,7 +16,7 @@ const SearchBar = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="max-w-md mx-auto my-4">
+        <form onSubmit={handleSubmit} className="max-w-md mx-auto my-6">
             <div className="relative outline-none select-none bg-main-500">
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -26,7 +26,7 @@ const SearchBar = () => {
                 <input
                     type="search"
                     id="default-search"
-                    className="without-ring block w-full p-4 pl-10 text-sm border rounded-lg bg-main-400 border-main-600 placeholder-gray-400 text-white"
+                    className="block w-full p-4 pl-10 text-sm border rounded-lg bg-main-400 border-main-600 placeholder-gray-400 text-white focus:ring-main-purple-dark"
                     placeholder="Search for cars (e.g., BMW, Audi, Ford)"
                     value={inputValue}
                     onChange={handleChange}
