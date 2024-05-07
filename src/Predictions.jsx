@@ -6,6 +6,7 @@ import Submit from './components/buttons/Submit'
 import PredictionInput from './components/inputs/PredictionInput.jsx';
 import Autocomplete from './components/inputs/AutoComplete';
 import Dropdown from './components/inputs/Dropdown.jsx';
+import PriceModal from './components/PriceModal.jsx';
 
 function getRandom(arr, n) {
     var result = new Array(n),
@@ -24,7 +25,9 @@ function getRandom(arr, n) {
 const Predictions = () => {
     const [brand, setBrand] = useState("");
     const [model, setModel] = useState("");
+    const [year, setYear] = useState(0);
     const [price, setPrice] = useState(0);
+    const [isOpen, setIsOpen] = useState(false);
     const { data: brands } = useFetch("http://localhost:6969/brands/")
     const { data: cars, loading, error } = useFetch("http://localhost:6969/cars/");
 
@@ -39,9 +42,10 @@ const Predictions = () => {
         for (const [key, value] of formData.entries()) {
             jsonData[key.toLowerCase()] = value;
         }
+        setYear(jsonData['year']);
         console.log(formData, jsonData)
         const location = new URL('http://localhost:6969/predict');
-        const url = window.location.href.includes('localhost') ? `http://localhost:6969${location.pathname+location.search}` : `https://154.53.38.83:6969${location.pathname+location.search}`;
+        const url = window.location.href.includes('localhost') ? `http://localhost:6969${location.pathname + location.search}` : `https://154.53.38.83:6969${location.pathname + location.search}`;
         fetch(url, {
             method: 'POST',
             credentials: 'include',
@@ -51,12 +55,16 @@ const Predictions = () => {
             body: JSON.stringify(jsonData)
         })
             .then(response => response.json())
-            .then(data => console.log(data))
+            .then(d => {
+                setPrice(d.price);
+                setIsOpen(true);
+            })
             .catch(error => console.error('Error:', error));
     };
 
     return (
         <div className="flex">
+            <PriceModal price={price} year={year} brand={brand} model={model} carPrices={cars.filter(c => c.model === model).map(c => ({ data: c.price, label: c.end_date }))} isOpen={isOpen} setIsOpen={setIsOpen} />
             <div className="w-2/3 mt-4 ml-2 pl-4 pt-4">
                 <form onKeyPress={(event) => {
                     if (event.key === 'Enter') event.preventDefault();
@@ -92,10 +100,10 @@ const Predictions = () => {
                         Array.from({ length: 3 }).map((_, i) => <LoadingCarCard key={i} />)
 
                     ) : (getRandom(cars, 3).map((car) => (
-                            <div className='m-4'>
-                                <CarCard car={car} key={car.sale_id} />
-                            </div>
-                        ))
+                        <div className='m-4'>
+                            <CarCard car={car} key={car.sale_id} />
+                        </div>
+                    ))
                     )}
                 </div>
             </div>

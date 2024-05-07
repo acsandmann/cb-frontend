@@ -24,7 +24,6 @@ function CarDetail() {
       .then((data) => {
         setCar(data);
         setFormData({
-          // Set form data with the fetched car details
           price: data.price || "",
           engine: data.engine || "",
           transmission: data.transmission || "",

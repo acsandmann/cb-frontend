@@ -20,7 +20,6 @@ const Header = () => {
                             </li>
                             <li>
                                 <HeaderButton text="Analytics" path="/analytics" />
-                                
                             </li>
                         </ul>
                     </nav>

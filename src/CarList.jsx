@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSearchParams } from "react-router-dom";
 import CarCard from "./components/CarCard";
 import LoadingCarCard from "./components/LoadingCarCard";
@@ -6,13 +6,10 @@ import SearchBar from "./components/SearchBar";
 import { useFetch } from "./util";
 
 function filter_cars(cars, searchTerm) {
-  const searchWords = searchTerm.toLowerCase().split(/\s+/); // Split the search term into words by spaces
+  const searchWords = searchTerm.toLowerCase().split(/\s+/); 
 
   return cars.filter(car => {
-    // Create a searchable string from each car's relevant attributes
     const carData = `${car.year} ${car.brand} ${car.model}`.toLowerCase();
-
-    // Check if all words in the search term are found in the combined car string
     return searchWords.every(word => carData.includes(word));
   });
 };

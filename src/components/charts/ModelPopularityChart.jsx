@@ -10,14 +10,19 @@ const aggregateModelData = (data) => {
         return acc;
     }, {});
 
+    const sortedModelCounts = Object.entries(modelCounts)
+        .sort((a, b) => b[1] - a[1]) 
+        .slice(0, 20);
+
     return {
-        labels: Object.keys(modelCounts),
+        labels: sortedModelCounts.map(item => item[0]), 
         datasets: [{
-            data: Object.values(modelCounts),
+            data: sortedModelCounts.map(item => item[1]), 
             backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#F7464A', '#FDB45C'],
         }]
     };
 };
+
 
 const ModelPopularityChart = ({ data }) => {
     const modelChartData = aggregateModelData(data);
