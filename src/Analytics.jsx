@@ -15,8 +15,7 @@ const Analytics = () => {
 
     return (
         <div className="bg-dark-800 min-h-screen">
-            <h2 className="text-center text-xl text-white font-bold py-4">(work in progress)</h2>
-            <div className="border-main-border border-b container mx-auto px-4 flex flex-wrap justify-center items-stretch">
+            <div className="border-main-border border-b mb-6 container mx-auto px-4 flex flex-wrap justify-center items-stretch">
                 <div className="w-full md:w-1/2 p-4"><CarPriceChartCard data={cars} /></div>
                 <div className="w-full md:w-1/2 p-4"><TransmissionTypeChart data={cars} /></div>
                 <div className='w-full md:w-1/2 p-4'><ModelPopularityChart data={cars} /></div>
