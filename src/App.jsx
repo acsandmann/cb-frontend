@@ -8,6 +8,7 @@ import BrandList from './BrandList';
 import Predictions from './Predictions';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import { Analytics as V } from "@vercel/analytics/react"
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
     <Router>
         <Header />
         <div className="bg-main-body flex flex-col min-h-screen m-0 z-40">
+        <V />
           <Routes>
             <Route path="/" element={<CarList />} />
             <Route path="/brands" element={<BrandList />} />
