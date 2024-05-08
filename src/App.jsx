@@ -9,6 +9,7 @@ import Predictions from './Predictions';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { Analytics as V } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
         <Header />
         <div className="bg-main-body flex flex-col min-h-screen m-0 z-40">
         <V />
+        <SpeedInsights />
           <Routes>
             <Route path="/" element={<CarList />} />
             <Route path="/brands" element={<BrandList />} />
